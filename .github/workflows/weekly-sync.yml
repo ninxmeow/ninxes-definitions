@@ -1,0 +1,58 @@
+name: weekly-upstream-sync
+
+# 每周检查上游 the-via/keyboards 是否有新 commit（裁定 B7）；
+# 有则跑同步流水线并开 PR，人工审核合并（流水线职责④）。
+
+on:
+  schedule:
+    - cron: "17 2 * * 1" # 每周一 02:17 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 解析上游 HEAD revision
+        id: rev
+        run: echo "sha=$(git ls-remote https://github.com/the-via/keyboards HEAD | cut -f1)" >> "$GITHUB_OUTPUT"
+
+      - name: 判断是否已同步
+        id: gate
+        run: |
+          current=$(node -p "require('./manifest/index.json').upstreamRevision")
+          if [ "$current" = "${{ steps.rev.outputs.sha }}" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 运行同步流水线
+        if: steps.gate.outputs.skip == 'false'
+        run: node tools/sync-upstream.mjs --revision "${{ steps.rev.outputs.sha }}" --notes /tmp/sync-notes.txt
+
+      - name: 提交并开 PR
+        if: steps.gate.outputs.skip == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          version=$(node -p "require('./manifest/index.json').releaseVersion")
+          branch="sync/${version}"
+          git config user.name "ninxes-definitions-bot"
+          git config user.email "bot@ninx.cafe"
+          git checkout -b "$branch"
+          git add manifest v2 v3
+          git commit -m "sync: 上游 ${{ steps.rev.outputs.sha }} → ${version}
+
+          $(cat /tmp/sync-notes.txt)"
+          git push -u origin "$branch"
+          gh pr create --title "definition 同步 ${version}" --body-file /tmp/sync-notes.txt

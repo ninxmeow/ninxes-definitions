@@ -1,0 +1,29 @@
+name: tag-release
+
+# PR 合并进 main 且 manifest 变化时，按 manifest.releaseVersion 打 tag（裁定 B6）。
+# 前端 submodule 指向该 tag 即完成一次 definition 发布。
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "manifest/index.json"
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 打 release tag
+        run: |
+          version=$(node -p "require('./manifest/index.json').releaseVersion")
+          if git rev-parse -q --verify "refs/tags/${version}" >/dev/null; then
+            echo "tag ${version} 已存在，跳过"
+            exit 0
+          fi
+          git tag -a "${version}" -m "definition release ${version}"
+          git push origin "${version}"
