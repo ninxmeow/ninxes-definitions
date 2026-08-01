@@ -20,6 +20,8 @@ jobs:
 
       - name: 打 release tag
         run: |
+          git config user.name "ninxes-definitions-bot"
+          git config user.email "bot@ninx.cafe"
           version=$(node -p "require('./manifest/index.json').releaseVersion")
           if git rev-parse -q --verify "refs/tags/${version}" >/dev/null; then
             echo "tag ${version} 已存在，跳过"
