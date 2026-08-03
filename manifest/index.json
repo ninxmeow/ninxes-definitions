@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generatedAt": 1785600746101,
-  "releaseVersion": "def-2026.08.02-r1",
-  "upstreamRevision": "0ad67d366bdfbb363830d8b3822518c60055cc63",
+  "generatedAt": 1785727554228,
+  "releaseVersion": "def-2026.08.03-r1",
+  "upstreamRevision": "692be533146b793ea67c6c3cdf0b6060a4e5ebb0",
   "vendorProductIds": {
     "v2": [
       458759,
@@ -3080,6 +3080,7 @@
       2305314387,
       2305314388,
       2305314389,
+      2305314390,
       2305314613,
       2305314614,
       2305314865,
@@ -3496,7 +3497,7 @@
       4294852949
     ]
   },
-  "contentHash": "d04fde7e5e51fb60412632171ee628ff6d058b83791e6fded9cc5a39403b7d58",
+  "contentHash": "d75fb8681eb490e7624cb6fe469296e8814e06aa57e76ea2ed0b99ad5ae41e81",
   "hashes": {
     "v2/458759.json": "d00c5501bacaec842a54d74b142cf73f49eafbcc8c24ba224f0df927cb10231e",
     "v2/6946912.json": "ba7f50dae4e50f8b9879b4689d4f7c595b1e1e25f00560472b60f06878153987",
@@ -6571,6 +6572,7 @@
     "v3/2305314387.json": "22fbd44d946f9981072e71c19016a3f6f1518fa6cc71b3df6a429d1803d321f2",
     "v3/2305314388.json": "e35e692927df671aaacbfcf7d22ed2fea0a17a461df1ec8352e1ba9d0f7e55f8",
     "v3/2305314389.json": "c2a6e9a82dfe17756adde7f5ed883ac94c4d8060fc71b72ac6caaa61c4cb3dd4",
+    "v3/2305314390.json": "abe40c0273f4c1d157a1bc77c78f8d7038e7acdfbffe06a3daf9786b87ba1fb0",
     "v3/2305314613.json": "797ebb2d21440fd569c0d0e7c5019fc97bd89b730c1541c809b6e834328c09e3",
     "v3/2305314614.json": "1ced9ec8c0c9c73e79ea16f00831623f3d7670c4a41401cac313ef00a3357a29",
     "v3/2305314865.json": "7fc6f97b8f74a19cd75fa27fa4e0a350e111fff9f620326faa82c6e68e909628",
